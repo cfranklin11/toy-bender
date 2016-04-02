@@ -40,15 +40,16 @@ d3Helper = {
     }
   },
   createBender: function(x, y, face) {
-    var svg, width, rectWidth, rectNumber, centerX, centerY,
-      metalColor, whiteColor, radius, strokeWidth, bender;
+    var svg, width, height, rectWidth, rectNumber, centerX, centerY,
+      metalColor, whiteColor, radius, strokeWidth, benderOuter, benderInner;
 
     svg = $('#grid-svg');
     width = +svg.attr('width');
+    height = +svg.attr('height');
     rectWidth = width / 5;
     rectNumber = svg.find('rect').length;
     centerX = x * rectWidth + rectWidth / 2;
-    centerY = y * rectWidth + rectWidth / 2;
+    centerY = height - y * rectWidth - rectWidth / 2;
 
     metalColor = '#7C9DA0';
     whiteColor = '#FFFED6';
@@ -56,95 +57,107 @@ d3Helper = {
     strokeWidth = 4;
 
     // Group to keep all Bender parts together
-    bender = d3.select('#grid-svg')
+    benderOuter = d3.select('#grid-svg')
       .append('g')
-      .attr('id', 'bender')
+      .attr('id', 'bender-outer')
+      .attr('data-x', x)
+      .attr('data-y', y)
+      .attr('data-coordx', centerX)
+      .attr('data-coordy', centerY)
+      .attr('transform', 'translate(0, 0)');
+
+    benderInner = benderOuter.append('g')
+      .attr('id', 'bender-inner')
       .attr('data-face', face);
 
-    // Benders' head
-    bender.append('circle')
+    // benderInners' head
+    benderInner.append('circle')
       .attr('cx', centerX)
       .attr('cy', centerY)
       .attr('r', radius)
       .attr('fill', metalColor);
-    bender.append('rect')
+    benderInner.append('rect')
       .attr('x', centerX - radius)
       .attr('y', centerY)
       .attr('width', radius * 2)
       .attr('height', radius * 2)
       .attr('fill', metalColor);
 
-    // Bender's antennae
-    bender.append('line')
+    // benderInner's antennae
+    benderInner.append('line')
       .attr('x1', centerX)
       .attr('y1', centerY - radius)
       .attr('x2', centerX)
       .attr('y2', centerY - radius * 2)
       .attr('stroke', metalColor)
       .attr('stroke-width', strokeWidth);
-    bender.append('circle')
+    benderInner.append('circle')
       .attr('cx', centerX)
       .attr('cy', centerY - radius * 2)
       .attr('r', strokeWidth)
       .attr('fill', metalColor);
 
-    // Bender's eyes
-    bender.append('rect')
+    // benderInner's eyes
+    benderInner.append('rect')
       .attr('x', centerX - radius * 0.5)
       .attr('y', centerY)
       .attr('width', radius)
       .attr('height', radius * 0.7)
       .attr('fill', 'black');
-    bender.append('circle')
+    benderInner.append('circle')
       .attr('cx', centerX - radius * 0.5)
       .attr('cy', centerY + radius * 0.35)
       .attr('r', radius * 0.35)
       .attr('fill', 'black');
-    bender.append('circle')
+    benderInner.append('circle')
       .attr('cx', centerX + radius * 0.5)
       .attr('cy', centerY + radius * 0.35)
       .attr('r', radius * 0.35)
       .attr('fill', 'black');
-    bender.append('circle')
+    benderInner.append('circle')
       .attr('cx', centerX - radius * 0.35)
       .attr('cy', centerY + radius * 0.35)
       .attr('r', radius * 0.35)
       .attr('fill', whiteColor);
-    bender.append('circle')
+    benderInner.append('circle')
       .attr('cx', centerX + radius * 0.35)
       .attr('cy', centerY + radius * 0.35)
       .attr('r', radius * 0.35)
       .attr('fill', whiteColor);
-    bender.append('circle')
+    benderInner.append('circle')
       .attr('cx', centerX - radius * 0.35)
       .attr('cy', centerY + radius * 0.35)
       .attr('r', radius * 0.35 / 4)
       .attr('fill', 'black');
-    bender.append('circle')
+    benderInner.append('circle')
       .attr('cx', centerX + radius * 0.35)
       .attr('cy', centerY + radius * 0.35)
       .attr('r', radius * 0.35 / 4)
       .attr('fill', 'black');
 
-    // Bender's mouth
-    bender.append('rect')
+    // benderInner's mouth
+    benderInner.append('rect')
       .attr('x', centerX - radius * 0.5)
       .attr('y', centerY + radius)
       .attr('width', radius)
       .attr('height', radius * 0.7)
       .attr('fill', whiteColor);
-    bender.append('circle')
+    benderInner.append('circle')
       .attr('cx', centerX - radius * 0.5)
       .attr('cy', centerY + radius * 1.35)
       .attr('r', radius * 0.35)
       .attr('fill', whiteColor);
-    bender.append('circle')
+    benderInner.append('circle')
       .attr('cx', centerX + radius * 0.5)
       .attr('cy', centerY + radius * 1.35)
       .attr('r', radius * 0.35)
       .attr('fill', whiteColor);
 
-    bender.attr('transform', 'rotate(' + (face * 90).toFixed() + ', ' +
-      centerX.toFixed() + ', ' + centerY.toFixed() + ')');
+    benderInner.attr('transform', 'rotate(' + (face * 90).toFixed() + ', ' + centerX.toFixed() +
+      ', ' + centerY.toFixed() + ')');
+       // translate(0, 0)');
+  },
+  ouch: function() {
+    console.log('ouch');
   }
 };
