@@ -1,3 +1,5 @@
+'use strict';
+
 var d3Helper;
 
 d3Helper = {
@@ -19,11 +21,11 @@ d3Helper = {
     rectWidth = w / grid;
     rectHeight = h / grid;
 
-    for (i = 0; i < grid * grid + 1; i++) {
+    for (i = 0; i < grid * grid; i++) {
       dataX = i % 5;
       dataY = Math.floor(i / grid);
       rectX = rectWidth * dataX;
-      rectY = rectHeight * dataY;
+      rectY = h - (rectHeight * (dataY + 1));
 
       svg.append('rect')
         .attr('x', rectX)
@@ -34,11 +36,11 @@ d3Helper = {
         .attr('stroke', 'black')
         .attr('stroke-width', '1')
         .attr('data-x', dataX)
-        .attr('data-y', dataY)
+        .attr('data-y', dataY);
     }
   },
   createBender: function(x, y, face) {
-    var svg, width, rectWidth, rectNumber, fillColor, centerX, centerY,
+    var svg, width, rectWidth, rectNumber, centerX, centerY,
       metalColor, whiteColor, radius, strokeWidth, bender;
 
     svg = $('#grid-svg');
@@ -55,7 +57,9 @@ d3Helper = {
 
     // Group to keep all Bender parts together
     bender = d3.select('#grid-svg')
-      .append('g');
+      .append('g')
+      .attr('id', 'bender')
+      .attr('data-face', face);
 
     // Benders' head
     bender.append('circle')
@@ -139,6 +143,8 @@ d3Helper = {
       .attr('cy', centerY + radius * 1.35)
       .attr('r', radius * 0.35)
       .attr('fill', whiteColor);
-    }
 
-}
+    bender.attr('transform', 'rotate(' + (face * 90).toFixed() + ', ' +
+      centerX.toFixed() + ', ' + centerY.toFixed() + ')');
+  }
+};

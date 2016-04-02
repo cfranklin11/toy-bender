@@ -31,10 +31,10 @@
           </select>
           <label for="face">Direction to Face</label>
           <select name="face" id="face">
-            <option value="n">North</option>
-            <option value="w">West</option>
-            <option value="s">South</option>
-            <option value="e">East</option>
+            <option value="0">North</option>
+            <option value="1">East</option>
+            <option value="2">South</option>
+            <option value="3">West</option>
           </select>
           <button type="button" id="btn-place">Place</button>
         </fieldset>
@@ -42,14 +42,18 @@
         <fieldset>
           <label for="turn">Turn</label>
           <select name="turn" id="turn">
-            <option value="r">Right</option>
-            <option value="l">Left</option>
+            <option value="1">Right</option>
+            <option value="-1">Left</option>
           </select>
           <button type="button" id="btn-turn">Turn</button>
         </fieldset>
 
         <fieldset>
           <button type="button" id="btn-move">Move Forward</button>
+        </fieldset>
+
+        <fieldset>
+          <button type="button" id="btn-report">Report</button>
         </fieldset>
       </form>
     </div>
