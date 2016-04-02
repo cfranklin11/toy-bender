@@ -34,17 +34,11 @@ $(function() {
       translateY, newFace, rotation, rotateX, rotateY, newTranslateX,
       newTranslateY, rotate, newRotate, newTranslate;
 
+    $('.alert').removeClass('visible');
+
     turn = +$('#turn').val();
-    benderOuter = $('#bender-outer');
     benderInner = $('#bender-inner');
     face = +benderInner.attr('data-face');
-    x = +benderOuter.attr('data-x');
-    y = +benderOuter.attr('data-y');
-    coordX = benderOuter.attr('data-coordx');
-    coordY = benderOuter.attr('data-coordy');
-    translate = benderOuter.attr('transform');
-    translateX = +(/translate\((-?\d+)\,/.exec(translate)[1]);
-    translateY = +(/translate\(-?\d+\,\s(-?\d+)\)/.exec(translate)[1]);
     rotate = benderInner.attr('transform');
 
     newFace = face + turn;
@@ -56,37 +50,8 @@ $(function() {
     }
     rotation = (newFace * 90).toFixed();
 
-    switch (newFace) {
-      case 0:
-        newTranslateX = translateX;
-        newTranslateY = translateY;
-        break;
-
-      case 1:
-        newTranslateX = translateY * -1;
-        newTranslateY = translateX;
-        break;
-
-      case 2:
-        newTranslateX = translateX * -1;
-        newTranslateY = translateY * -1;
-        break;
-
-      case 3:
-        newTranslateX = translateY;
-        newTranslateY = translateX * -1;
-        break;
-    }
-
     newRotate = rotate.replace(/rotate\(-?\d{1,3}\,/,
       'rotate(' + rotation + ',');
-
-    // newRotate = rotate.replace(/rotate\((?:-?\d+\,\s){2}-?\d+\)/,
-    //   'rotate(' + rotation + ', ' + coordX + ', ' + coordY +')');
-    // newTranslate = translate.replace(/translate\(-?\d+\,\s-?\d+\)/,
-    //   'translate(' + newTranslateX + ', ' + newTranslateY + ')');
-
-    // benderOuter.attr('transform', newTranslate);
     benderInner.attr('transform', newRotate);
     benderInner.attr('data-face', newFace.toFixed());
   });
@@ -98,6 +63,8 @@ $(function() {
     var benderOuter, benderInner, face, x, y, coordX, coordY, rotation, translate, translateX,
       translateY, rotate, newX, newY, newCoordX, newCoordY, newTranslate, newRotate;
 
+    $('.alert').removeClass('visible');
+
     benderOuter = $('#bender-outer');
     benderInner = $('#bender-inner');
     face = +benderInner.attr('data-face');
@@ -105,15 +72,10 @@ $(function() {
     y = +benderOuter.attr('data-y');
     coordX = +benderOuter.attr('data-coordx');
     coordY = +benderOuter.attr('data-coordy');
-    rotation = face * 90;
 
     translate = benderOuter.attr('transform');
     translateX = +(/translate\((-?\d+)\,/.exec(translate)[1]);
     translateY = +(/translate\(-?\d+\,\s(-?\d+)\)/.exec(translate)[1]);
-
-    rotate = benderInner.attr('transform');
-
-    console.log(y);
 
     switch (face) {
       case 0:
@@ -185,11 +147,8 @@ $(function() {
 
     newTranslate = translate.replace(/translate\(-?\d+\,\s-?\d+\)/,
       'translate(' + newX + ', ' + newY + ')');
-    newRotate = rotate.replace(/rotate\((?:-?\d+\,\s){2}-?\d+\)/,
-      'rotate(' + rotation + ', ' + newCoordX + ', ' + newCoordY +')');
 
     benderOuter.attr('transform', newTranslate);
-    // benderInner.attr('transform', newRotate)
     benderOuter.attr('data-x', x);
     benderOuter.attr('data-y', y);
     benderOuter.attr('data-coordx', newCoordX);
@@ -200,6 +159,36 @@ $(function() {
   // **** REPORT ****
   // ****************
   $('#btn-report').click(function(event) {
+    var benderOuter, benderInner, x, y, face, direction, alert, message, newMessage;
 
+    benderOuter = $('#bender-outer');
+    x = benderOuter.attr('data-x');
+    y = benderOuter.attr('data-y');
+    benderInner = $('#bender-inner');
+    face = benderInner.attr('data-face');
+
+    switch (face) {
+      case '0':
+        direction = 'North';
+        break;
+      case '1':
+        direction = 'East';
+        break;
+      case '2':
+        direction = 'South';
+        break;
+      case '3':
+        direction = 'West';
+        break;
+    }
+
+    alert = $('.alert-info').children('h4');
+    message = alert.text();
+    newMessage = message.replace(/\d+\sx/, x + ' x');
+    newMessage = newMessage.replace(/\d+\sy/, y + ' y');
+    newMessage = newMessage.replace(/facing\s\w+\s/, 'facing ' + direction + ' ');
+
+    alert.text(newMessage);
+    $('.alert-info').addClass('visible');
   });
 });

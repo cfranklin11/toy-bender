@@ -7,17 +7,14 @@ a {
   color: #00B7FF;
 }
 
-/*#grid-div {
- position: relative;
- height: 0;
- width: 50%;
- padding: 0;
- padding-bottom: 50%;
+.alert {
+  visibility: hidden;
 }
-.grid-svg {
- position: absolute;
- height: 100%;
- width: 100%;
- left: 0;
- top: 0;
-}*/
+
+.alert.visible {
+  visibility: visible;
+}
+
+svg {
+  padding-bottom: 1% !important;
+}

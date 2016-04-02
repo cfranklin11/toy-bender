@@ -4,10 +4,10 @@ var d3Helper;
 
 d3Helper = {
   initialize: function() {
-    var w, h, grid, svg, rectWidth, rectHeight, i, dataX, dataY, rectX, rectY;
+    var w, h, grid, svg, rectWidth, i, dataX, dataY, rectX, rectY;
 
-    w = 500;
-    h = 500;
+    w = 600;
+    h = 600;
     grid = 5;
 
     svg = d3.select('#grid-div')
@@ -18,20 +18,19 @@ d3Helper = {
       .attr('preserveAspectRatio', 'xMinYMin meet')
       .attr('id', 'grid-svg');
 
-    rectWidth = w / grid;
-    rectHeight = h / grid;
+    rectWidth = (w / grid) * 0.99;
 
     for (i = 0; i < grid * grid; i++) {
       dataX = i % 5;
       dataY = Math.floor(i / grid);
       rectX = rectWidth * dataX;
-      rectY = h - (rectHeight * (dataY + 1));
+      rectY = h - (rectWidth * (dataY + 1));
 
       svg.append('rect')
         .attr('x', rectX)
         .attr('y', rectY)
         .attr('width', rectWidth)
-        .attr('height', rectHeight)
+        .attr('height', rectWidth)
         .attr('fill', 'white')
         .attr('stroke', 'black')
         .attr('stroke-width', '1')
@@ -146,18 +145,19 @@ d3Helper = {
       .attr('cx', centerX - radius * 0.5)
       .attr('cy', centerY + radius * 1.35)
       .attr('r', radius * 0.35)
-      .attr('fill', whiteColor);
+      .attr('fill', whiteColor)
+      .attr('id', 'bender-mouth-left');
     benderInner.append('circle')
       .attr('cx', centerX + radius * 0.5)
       .attr('cy', centerY + radius * 1.35)
       .attr('r', radius * 0.35)
-      .attr('fill', whiteColor);
+      .attr('fill', whiteColor)
+      .attr('id', 'bender-mouth-right');
 
     benderInner.attr('transform', 'rotate(' + (face * 90).toFixed() + ', ' + centerX.toFixed() +
       ', ' + centerY.toFixed() + ')');
-       // translate(0, 0)');
   },
   ouch: function() {
-    console.log('ouch');
+    $('.alert-danger').addClass('visible');
   }
 };
