@@ -78,12 +78,15 @@ $(function() {
         break;
     }
 
-    newRotate = rotate.replace(/rotate\((?:-?\d+\,\s){2}-?\d+\)/,
-      'rotate(' + rotation + ', ' + coordX + ', ' + coordY +')');
-    newTranslate = translate.replace(/translate\(-?\d+\,\s-?\d+\)/,
-      'translate(' + newTranslateX + ', ' + newTranslateY + ')');
+    newRotate = rotate.replace(/rotate\(-?\d{1,3}\,/,
+      'rotate(' + rotation + ',');
 
-    benderOuter.attr('transform', newTranslate);
+    // newRotate = rotate.replace(/rotate\((?:-?\d+\,\s){2}-?\d+\)/,
+    //   'rotate(' + rotation + ', ' + coordX + ', ' + coordY +')');
+    // newTranslate = translate.replace(/translate\(-?\d+\,\s-?\d+\)/,
+    //   'translate(' + newTranslateX + ', ' + newTranslateY + ')');
+
+    // benderOuter.attr('transform', newTranslate);
     benderInner.attr('transform', newRotate);
     benderInner.attr('data-face', newFace.toFixed());
   });
@@ -186,7 +189,7 @@ $(function() {
       'rotate(' + rotation + ', ' + newCoordX + ', ' + newCoordY +')');
 
     benderOuter.attr('transform', newTranslate);
-    benderInner.attr('transform', newRotate)
+    // benderInner.attr('transform', newRotate)
     benderOuter.attr('data-x', x);
     benderOuter.attr('data-y', y);
     benderOuter.attr('data-coordx', newCoordX);
