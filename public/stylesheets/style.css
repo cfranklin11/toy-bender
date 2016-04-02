@@ -7,13 +7,12 @@ a {
   color: #00B7FF;
 }
 
-.grid-div {
+/*#grid-div {
  position: relative;
  height: 0;
- width: 100%;
+ width: 50%;
  padding: 0;
- padding-bottom: 100%;
- /* override this inline for aspect ratio other than square */
+ padding-bottom: 50%;
 }
 .grid-svg {
  position: absolute;
@@ -21,4 +20,4 @@ a {
  width: 100%;
  left: 0;
  top: 0;
-}
+}*/

@@ -9,8 +9,54 @@
     <p>Welcome to <%= title %></p>
     <div id="grid-div">
     </div>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-      <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-      <script src="/javascripts/client.js"></script>
+
+    <div>
+      <form>
+        <fieldset>
+          <label for="x">X-Coordinate</label>
+          <select name="x" id="x">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+          <label for="y">Y-Coordinate</label>
+          <select name="y" id="y">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
+          <label for="face">Direction to Face</label>
+          <select name="face" id="face">
+            <option value="n">North</option>
+            <option value="w">West</option>
+            <option value="s">South</option>
+            <option value="e">East</option>
+          </select>
+          <button type="button" id="btn-place">Place</button>
+        </fieldset>
+
+        <fieldset>
+          <label for="turn">Turn</label>
+          <select name="turn" id="turn">
+            <option value="r">Right</option>
+            <option value="l">Left</option>
+          </select>
+          <button type="button" id="btn-turn">Turn</button>
+        </fieldset>
+
+        <fieldset>
+          <button type="button" id="btn-move">Move Forward</button>
+        </fieldset>
+      </form>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="/javascripts/lib/d3.min.js"></script>
+    <script src="/javascripts/d3-helper.js"></script>
+    <script src="/javascripts/client.js"></script>
   </body>
 </html>
