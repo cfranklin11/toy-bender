@@ -10,6 +10,7 @@ d3Helper = {
     h = 400;
     grid = 5;
 
+    // Build square SVG grid with rectangles
     svg = d3.select('#grid-div')
       .append('svg')
       .attr('width', w)
@@ -65,6 +66,7 @@ d3Helper = {
       .attr('data-coordy', centerY)
       .attr('transform', 'translate(0, 0)');
 
+    // Nested group to keep translate and rotate transforms separate
     benderInner = benderOuter.append('g')
       .attr('id', 'bender-inner')
       .attr('data-face', face);
@@ -82,7 +84,7 @@ d3Helper = {
       .attr('height', radius * 2)
       .attr('fill', metalColor);
 
-    // benderInner's antennae
+    // benderInner's antenna
     benderInner.append('line')
       .attr('x1', centerX)
       .attr('y1', centerY - radius)
@@ -154,10 +156,7 @@ d3Helper = {
       .attr('fill', whiteColor)
       .attr('id', 'bender-mouth-right');
 
-    benderInner.attr('transform', 'rotate(' + (face * 90).toFixed() + ', ' + centerX.toFixed() +
-      ', ' + centerY.toFixed() + ')');
-  },
-  ouch: function() {
-    $('.alert-danger').addClass('visible');
+    benderInner.attr('transform', 'rotate(' + (face * 90).toFixed() + ', ' +
+      centerX.toFixed() + ', ' + centerY.toFixed() + ')');
   }
 };

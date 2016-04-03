@@ -1,2 +1,4 @@
 # toy-bender
-Toy Robot Challenge, starring Bender
+Toy Robot: Bender's Adventure
+
+Hosted on Heroku at toy-bender.herokuapp.com

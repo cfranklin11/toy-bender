@@ -3,6 +3,7 @@
 $(function() {
   var gridWidth, rectNumber, rectWidth;
 
+  // Create SVG grid
   d3Helper.initialize();
 
   gridWidth = +$('#grid-svg').attr('width');
@@ -12,8 +13,8 @@ $(function() {
   // ***************
   // **** PLACE ****
   // ***************
-  $('#btn-place').click(function(event) {
-    var form, x, y, face;
+  $('#btn-place').click(function() {
+    var x, y, face;
 
     if ($('#bender-outer').attr('id')) {
       $('#bender-outer').remove();
@@ -21,18 +22,17 @@ $(function() {
 
     x = +$('#x').val();
     y = +$('#y').val();
-    face = +$('#face').val()
+    face = +$('#face').val();
 
+    // Create bender and place him on the grid according to form inputs
     d3Helper.createBender(x, y, face);
   });
 
   // **************
   // **** TURN ****
   // **************
-  $('#btn-turn').click(function(event) {
-    var turn, benderOuter, benderInner, face, x, y, coordX, coordY, translate, translateX,
-      translateY, newFace, rotation, rotateX, rotateY, newTranslateX,
-      newTranslateY, rotate, newRotate, newTranslate;
+  $('#btn-turn').click(function() {
+    var turn, benderInner, face, newFace, rotation, rotate, newRotate;
 
     $('.alert').removeClass('visible');
 
@@ -50,8 +50,9 @@ $(function() {
     }
     rotation = (newFace * 90).toFixed();
 
-    newRotate = rotate.replace(/rotate\(-?\d{1,3}\,/,
-      'rotate(' + rotation + ',');
+    // Replace rotate degrees in transform attr based on turn input
+    newRotate = rotate.replace(/rotate\(-?\d{1,3}/,
+      'rotate(' + rotation);
     benderInner.attr('transform', newRotate);
     benderInner.attr('data-face', newFace.toFixed());
   });
@@ -59,9 +60,9 @@ $(function() {
   // **************
   // **** MOVE ****
   // **************
-  $('#btn-move').click(function(event) {
-    var benderOuter, benderInner, face, x, y, coordX, coordY, rotation, translate, translateX,
-      translateY, rotate, newX, newY, newCoordX, newCoordY, newTranslate, newRotate;
+  $('#btn-move').click(function() {
+    var benderOuter, benderInner, face, x, y, coordX, coordY, translate,
+      translateX, translateY, newX, newY, newCoordX, newCoordY, newTranslate;
 
     $('.alert').removeClass('visible');
 
@@ -73,80 +74,60 @@ $(function() {
     coordX = +benderOuter.attr('data-coordx');
     coordY = +benderOuter.attr('data-coordy');
 
+    // Extract current translate x and y from transform attr
     translate = benderOuter.attr('transform');
     translateX = +(/translate\((-?\d+)\,/.exec(translate)[1]);
     translateY = +(/translate\(-?\d+\,\s(-?\d+)\)/.exec(translate)[1]);
 
+    if (face === 0 && y === 4 || face === 1 && x === 4 ||
+      face === 2 && y === 0 ||face === 3 && x === 0) {
+        $('.alert-danger').addClass('visible');
+        newX = translateX;
+        newY = translateY;
+        newCoordX = coordX;
+        newCoordY = coordY;
+
+    } else {
     switch (face) {
       case 0:
-        if (y < 4) {
-          newX = translateX;
-          newY = translateY - rectWidth;
-          newCoordX = coordX;
-          newCoordY = coordY - rectWidth;
-          y++;
-        } else {
-          d3Helper.ouch();
-          newX = translateX;
-          newY = translateY;
-          newCoordX = coordX;
-          newCoordY = coordY;
-        }
+        newX = translateX;
+        newY = translateY - rectWidth;
+        newCoordX = coordX;
+        newCoordY = coordY - rectWidth;
+        y++;
         break;
 
       case 1:
-        if (x < 4) {
-          newX = translateX + rectWidth;
-          newY = translateY;
-          newCoordX = coordX + rectWidth;
-          newCoordY = coordY;
-          x++;
-        } else {
-          d3Helper.ouch();
-          newX = translateX;
-          newY = translateY;
-          newCoordX = coordX;
-          newCoordY = coordY;
-        }
+        newX = translateX + rectWidth;
+        newY = translateY;
+        newCoordX = coordX + rectWidth;
+        newCoordY = coordY;
+        x++;
         break;
 
       case 2:
-        if (y > 0) {
-          newX = translateX;
-          newY = translateY + rectWidth;
-          newCoordX = coordX;
-          newCoordY = coordY + rectWidth;
-          y--;
-        } else {
-          d3Helper.ouch();
-          newX = translateX;
-          newY = translateY;
-          newCoordX = coordX;
-          newCoordY = coordY;
-        }
+        newX = translateX;
+        newY = translateY + rectWidth;
+        newCoordX = coordX;
+        newCoordY = coordY + rectWidth;
+        y--;
         break;
 
       case 3:
-        if (x > 0) {
-          newX = translateX - rectWidth;
-          newY = translateY;
-          newCoordX = coordX - rectWidth;
-          newCoordY = coordY;
-          x--;
-        } else {
-          d3Helper.ouch();
-          newX = translateX;
-          newY = translateY;
-          newCoordX = coordX;
-          newCoordY = coordY;
-        }
+        newX = translateX - rectWidth;
+        newY = translateY;
+        newCoordX = coordX - rectWidth;
+        newCoordY = coordY;
+        x--;
         break;
       default:
-        d3Helper.ouch();
+        console.log('Something broke: check data-face attribute of #bender-inner');
     }
+  }
 
+    // Set new translate by replacing x and y attributes in string
     newTranslate = translate.replace(/translate\(-?\d+\,\s-?\d+\)/,
-      'translate(' + newX + ', ' + newY + ')');
+      'translate(' + newX.toFixed() + ', ' + newY.toFixed() + ')');
 
     benderOuter.attr('transform', newTranslate);
     benderOuter.attr('data-x', x);
@@ -158,7 +139,7 @@ $(function() {
   // ****************
   // **** REPORT ****
   // ****************
-  $('#btn-report').click(function(event) {
+  $('#btn-report').click(function() {
     var benderOuter, benderInner, x, y, face, direction, alert, message, newMessage;
 
     benderOuter = $('#bender-outer');
@@ -182,12 +163,14 @@ $(function() {
         break;
     }
 
-    alert = $('.alert-info').children('h4');
+    // Replace parts of alert string with current facing, x, and y
+    alert = $('.alert-info').children('p');
     message = alert.text();
-    newMessage = message.replace(/\d+\sx/, x + ' x');
-    newMessage = newMessage.replace(/\d+\sy/, y + ' y');
-    newMessage = newMessage.replace(/facing\s\w+\s/, 'facing ' + direction + ' ');
+    newMessage = message.replace(/at\s\d+/, 'at ' + x);
+    newMessage = newMessage.replace(/\,\s\d+/, ', ' + y);
+    newMessage = newMessage.replace(/facing\s\w+\?/, 'facing ' + direction + '?');
 
+    $('.alert-danger').removeClass('visible');
     alert.text(newMessage);
     $('.alert-info').addClass('visible');
   });
