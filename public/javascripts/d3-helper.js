@@ -6,8 +6,8 @@ d3Helper = {
   initialize: function() {
     var w, h, grid, svg, rectWidth, i, dataX, dataY, rectX, rectY;
 
-    w = 600;
-    h = 600;
+    w = 400;
+    h = 400;
     grid = 5;
 
     svg = d3.select('#grid-div')
